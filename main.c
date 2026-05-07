@@ -1,15 +1,24 @@
+#include <math.h>
 #include <stdatomic.h>
 #include <stdio.h>
 
+struct players {
+  char player_name[16];
+  char player_symbol;
+} player1, player2;
+
 void define_players() {
-  char player1_symbol, player2_symbol;
+  printf("Enter the player1's name: ");
+  scanf("%s\n", player1.player_name);
   printf("enter player1's symbol(x or o): ");
-  scanf("%c", &player1_symbol);
-  if (player1_symbol == 'x') {
-    player2_symbol = 'o';
+  scanf("%c\n", &player1.player_symbol);
+  if (player1.player_symbol == 'x') {
+    player2.player_symbol = 'o';
   } else {
-    player2_symbol = 'x';
+    player2.player_symbol = 'x';
   }
+  printf("Enter the player2's name: ");
+  scanf("%s\n", player2.player_name);
 }
 void display_tictactoe(int tableArray[3][3]) {
   for (int i = 0; i < 3; i++) {
@@ -24,12 +33,55 @@ void display_tictactoe(int tableArray[3][3]) {
   }
 }
 int game_over(int tableArray[3][3]) {
+  char symbol;
   int check = 0;
-  if (check == 2)
-    printf("game_over and the winner is %c", );
-  return 1;
-  else return 0;
+  for (int i = 0; i < 3; i++) {
+    if (tableArray[i][0] == tableArray[i][1] == tableArray[i][2]) {
+      symbol = tableArray[i][0];
+      if (check == 0)
+        check++;
+      break;
+    }
+  }
+  for (int i = 0; i < 3; i++) {
+    if (tableArray[0][i] == tableArray[1][i] == tableArray[2][i]) {
+      symbol = tableArray[i][0];
+      if (check == 0)
+        check++;
+      break;
+    }
+  }
+  if (tableArray[0][0] == tableArray[1][1] == tableArray[2][2] ||
+      tableArray[2][0] == tableArray[1][1] == tableArray[0][2]) {
+    symbol = tableArray[1][1];
+    if (check == 0)
+      check++;
+  }
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      if (tableArray[i][j] != 'x' && tableArray[i][j] != 'o') {
+        continue;
+      }
+      if (check == 0) {
+        check++;
+        break;
+      }
+    }
+  }
+
+  if (check == 1 && symbol == player1.player_symbol) {
+    printf("game_over and the winner is %s", player1.player_name);
+    return 1;
+  } else if (check == 1 && symbol == player2.player_symbol) {
+    printf("game_over and the winner is %s", player2.player_name);
+    return 1;
+  } else {
+    return 0;
+  }
 }
+
+void play_tictactoe(int tableArray[]);
+
 int main() {
   int tableArray[3][3] = {1, 2, 3, 4, 5, 6, 6, 7, 8};
   define_players();
