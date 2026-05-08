@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdatomic.h>
 #include <stdio.h>
+#include <threads.h>
 
 struct players {
   char player_name[16];
@@ -80,15 +81,29 @@ int game_over(int tableArray[3][3]) {
   }
 }
 
-void play_tictactoe(int tableArray[]);
+void play_tictactoe(int tableArray[3][3], char current_symbol) {
+  int position;
+  printf("enter the position of %c: ", current_symbol);
+  scanf("%d", &position);
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      if (tableArray[i][j] == position) {
+        tableArray[i][j] = current_symbol;
+      }
+    }
+  }
+}
 
 int main() {
   int tableArray[3][3] = {1, 2, 3, 4, 5, 6, 6, 7, 8};
+  int current_symbol = 'x';
   define_players();
   display_tictactoe(tableArray);
   return 0;
   while (!game_over(tableArray)) {
     display_tictactoe(tableArray);
+    current_symbol = current_symbol == 'o' ? 'x' : 'o';
+    play_tictactoe(tableArray, current_symbol);
   }
   return 0;
 }
