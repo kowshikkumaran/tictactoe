@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <threads.h>
 
 struct players {
   char player_name[16];
@@ -24,6 +25,34 @@ void display_tictactoe(int tableArray[3][3]) {
       }
     }
     printf("\n");
+  }
+}
+
+void add_symbol(int[3][3], char);
+int game_over(int[3][3]);
+void play_game(int[3][3], char);
+
+void start_game() {
+  int tableArray[3][3] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  int current_symbol = 'x';
+  define_players();
+  play_game(tableArray, current_symbol);
+}
+
+void play_game(int tableArray[3][3], char current_symbol) {
+  while (!game_over(tableArray)) {
+    display_tictactoe(tableArray);
+    current_symbol = current_symbol == 'o' ? 'x' : 'o';
+    add_symbol(tableArray, current_symbol);
+  }
+  printf("Wanna play one more(y or n): ");
+  char checker = 'n';
+  scanf("%c", &checker);
+  if (checker != 'n')
+    start_game();
+  else {
+    printf("until then :D");
+    return;
   }
 }
 
@@ -75,13 +104,13 @@ int game_over(int tableArray[3][3]) {
   return 1;
 }
 
-void play_tictactoe(int tableArray[3][3], char current_symbol) {
+void add_symbol(int tableArray[3][3], char current_symbol) {
   int position;
   printf("enter the position of %c: ", current_symbol);
   scanf("%d", &position);
   if (position < 1 || position > 9) {
     printf("Enter the valid position\n");
-    play_tictactoe(tableArray, current_symbol);
+    add_symbol(tableArray, current_symbol);
   }
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
@@ -94,28 +123,10 @@ void play_tictactoe(int tableArray[3][3], char current_symbol) {
     }
   }
   printf("Oops! its already taken like the girl you have crush on\n");
-  play_tictactoe(tableArray, current_symbol);
+  add_symbol(tableArray, current_symbol);
 }
-void play_game(int tableArray[3][3], char current_symbol) {
-  while (!game_over(tableArray)) {
-    display_tictactoe(tableArray);
-    current_symbol = current_symbol == 'o' ? 'x' : 'o';
-    play_tictactoe(tableArray, current_symbol);
-  }
-  printf("Wanna play one more(y or n): ");
-  char checker = 'n';
-  scanf("%c", &checker);
-  if (checker)
-    play_game(tableArray, current_symbol);
-  else {
-    printf("until then :D");
-    return;
-  }
-}
+
 int main() {
-  int tableArray[3][3] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  int current_symbol = 'x';
-  define_players();
-  play_game(tableArray, current_symbol);
+  start_game();
   return 0;
 }
