@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <threads.h>
 
 struct players {
   char player_name[16];
@@ -40,20 +39,20 @@ void start_game() {
 }
 
 void play_game(int tableArray[3][3], char current_symbol) {
-  while (!game_over(tableArray)) {
+  while (game_over(tableArray)) {
     display_tictactoe(tableArray);
     current_symbol = current_symbol == 'o' ? 'x' : 'o';
     add_symbol(tableArray, current_symbol);
   }
   printf("Wanna play one more(y or n): ");
-  char checker = 'n';
-  scanf("%c", &checker);
-  if (checker != 'n')
+  char checker;
+  scanf(" %c", &checker);
+  if (checker != 'n') {
     start_game();
-  else {
-    printf("until then :D");
-    return;
+  } else {
   }
+  printf("until then :D");
+  return;
 }
 
 int game_over(int tableArray[3][3]) {
@@ -87,21 +86,21 @@ int game_over(int tableArray[3][3]) {
 
   if (check == 1 && symbol == playerX.player_symbol) {
     printf("game_over and the winner is %s", playerX.player_name);
-    return 1;
+    return 0;
   }
   if (check == 1 && symbol == playerO.player_symbol) {
     printf("game_over and the winner is %s", playerO.player_name);
-    return 1;
+    return 0;
   }
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
       if (tableArray[i][j] != 'x' && tableArray[i][j] != 'o') {
-        return 0;
+        return 1;
       }
     }
   }
-  printf("nt! Match Tie :D");
-  return 1;
+  printf("nt! Match Tie :D\n");
+  return 0;
 }
 
 void add_symbol(int tableArray[3][3], char current_symbol) {
