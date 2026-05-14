@@ -8,10 +8,10 @@ struct players {
 void define_players() {
   playerX.player_symbol = 'x';
   playerO.player_symbol = 'o';
-  printf("Enter the X player's name: ");
-  scanf("%s", playerX.player_name);
   printf("Enter the O player's name: ");
   scanf("%s", playerO.player_name);
+  printf("Enter the X player's name: ");
+  scanf("%s", playerX.player_name);
 }
 
 void display_tictactoe(int tableArray[3][3]) {
@@ -21,7 +21,7 @@ void display_tictactoe(int tableArray[3][3]) {
         printf("%d ", tableArray[i][j]);
       } else {
         printf("%c ", tableArray[i][j]);
-      }
+      };
     }
     printf("\n");
   }
@@ -39,27 +39,30 @@ void start_game() {
 }
 
 void play_game(int tableArray[3][3], char current_symbol) {
-  while (game_over(tableArray)) {
+  int check = 1;
+  while (!game_over(tableArray)) {
     display_tictactoe(tableArray);
     current_symbol = current_symbol == 'o' ? 'x' : 'o';
     add_symbol(tableArray, current_symbol);
   }
+  display_tictactoe(tableArray);
   printf("Wanna play one more(y or n): ");
   char checker;
   scanf(" %c", &checker);
   if (checker != 'n') {
     start_game();
   } else {
+    printf("until then :D");
+    return;
   }
-  printf("until then :D");
-  return;
 }
 
 int game_over(int tableArray[3][3]) {
   char symbol;
   int check = 0;
   for (int i = 0; i < 3; i++) {
-    if (tableArray[i][0] == tableArray[i][1] == tableArray[i][2]) {
+    if (tableArray[i][0] == tableArray[i][1] &&
+        tableArray[i][1] == tableArray[i][2]) {
       if (check == 0) {
         symbol = tableArray[i][0];
         check++;
@@ -68,7 +71,8 @@ int game_over(int tableArray[3][3]) {
     }
   }
   for (int i = 0; i < 3; i++) {
-    if (tableArray[0][i] == tableArray[1][i] == tableArray[2][i]) {
+    if (tableArray[0][i] == tableArray[1][i] &&
+        tableArray[1][i] == tableArray[2][i]) {
       if (check == 0) {
         symbol = tableArray[i][0];
         check++;
@@ -76,8 +80,10 @@ int game_over(int tableArray[3][3]) {
       }
     }
   }
-  if (tableArray[0][0] == tableArray[1][1] == tableArray[2][2] ||
-      tableArray[2][0] == tableArray[1][1] == tableArray[0][2]) {
+  if ((tableArray[0][0] == tableArray[1][1] &&
+       tableArray[1][1] == tableArray[2][2]) ||
+      (tableArray[2][0] == tableArray[1][1] &&
+       tableArray[1][1] == tableArray[0][2])) {
     if (check == 0) {
       symbol = tableArray[1][1];
       check++;
@@ -85,22 +91,22 @@ int game_over(int tableArray[3][3]) {
   }
 
   if (check == 1 && symbol == playerX.player_symbol) {
-    printf("game_over and the winner is %s", playerX.player_name);
-    return 0;
+    printf("game_over and the winner is %s\n", playerX.player_name);
+    return 1;
   }
   if (check == 1 && symbol == playerO.player_symbol) {
-    printf("game_over and the winner is %s", playerO.player_name);
-    return 0;
+    printf("game_over and the winner is %s\n", playerO.player_name);
+    return 1;
   }
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
       if (tableArray[i][j] != 'x' && tableArray[i][j] != 'o') {
-        return 1;
+        return 0;
       }
     }
   }
   printf("nt! Match Tie :D\n");
-  return 0;
+  return 1;
 }
 
 void add_symbol(int tableArray[3][3], char current_symbol) {
