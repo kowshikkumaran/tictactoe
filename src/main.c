@@ -127,7 +127,7 @@ void add_symbol(int tableArray[3][3], char current_symbol) {
       }
     }
   }
-  printf("Oops! its already taken like the girl you have crush on\n");
+  printf("Oops! its already taken\n");
   add_symbol(tableArray, current_symbol);
 }
 
