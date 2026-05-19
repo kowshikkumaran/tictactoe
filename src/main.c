@@ -105,7 +105,7 @@ int game_over(int tableArray[3][3]) {
       }
     }
   }
-  printf("nt! Match Tie :D\n");
+  printf("nt! Match Tie...\n");
   return 1;
 }
 
